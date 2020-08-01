@@ -7,12 +7,13 @@
       placeholder="Enter new message in parent"
     ></textarea>
     <button v-on:click="send" class="myButton">Send message to child</button>
-    <Child :childMessage="childMessage" class="child"/>
+    <Child :childMessage="childMessage" class="child" />
   </div>
 </template>
 
 <script>
 import Child from "@/components/Child";
+import { mapActions } from "vuex";
 
 export default {
   name: "Home",
@@ -26,8 +27,10 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["storeMessage"]),
     send() {
       this.childMessage = this.parentMessage;
+      this.storeMessage(this.parentMessage);
       //clear parent message
       this.parentMessage = "";
     }
