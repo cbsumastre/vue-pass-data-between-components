@@ -18,8 +18,8 @@
     <div v-if="refMessage">
       Message with $refs: <span class="message"> {{ refMessage }}</span>
     </div>
-    <div>
-      Message with $parent:
+    <div v-if="parentMessage">
+      Message with $parent: <span class="message"> {{ parentMessage }}</span>
     </div>
   </div>
 </template>
@@ -41,7 +41,10 @@ export default {
   },
   inject: ["myTextInjected"],
   computed: {
-    ...mapGetters(["getStoreMessage"])
+    ...mapGetters(["getStoreMessage"]),
+    parentMessage() {
+      return this.$parent.childMessageParent;
+    }
   }
 };
 </script>

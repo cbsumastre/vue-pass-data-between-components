@@ -24,7 +24,8 @@ export default {
   data: function() {
     return {
       parentMessage: "",
-      childMessage: { text: "" } // change childMessage in object (reactive)
+      childMessage: { text: "" }, // change childMessage in object (reactive)
+      childMessageParent: ""
     };
   },
   provide() {
@@ -34,6 +35,7 @@ export default {
     ...mapActions(["storeMessage"]),
     send() {
       this.childMessage.text = this.parentMessage;
+      this.childMessageParent = this.parentMessage;
       this.storeMessage(this.parentMessage);
       this.$refs.refChild.refMessage = this.parentMessage;
       Vue.prototype.$refMessage = this.parentMessage;
