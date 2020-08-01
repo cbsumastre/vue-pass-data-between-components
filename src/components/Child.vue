@@ -1,24 +1,25 @@
 <template>
   <div class="container">
     <div v-if="childMessage">
-      With props: <span class="message">{{ childMessage }}</span>
+      Message with props: <span class="message">{{ childMessage }}</span>
     </div>
     <div v-if="myTextInjected.text">
-      With provide (parent) / inject (child):
+      Message with provide (parent) / inject (child):
       <span class="message">{{ myTextInjected.text }} </span>
     </div>
     <div v-if="getStoreMessage">
-      With vuex:
+      Message with vuex:
       <span class="message">{{ getStoreMessage }}</span>
     </div>
-    <div>
-      With root/prototype:
+    <div v-if="refMessage">
+      Message with root/prototype:
+      <span class="message"> {{ refMessage }}</span>
+    </div>
+    <div v-if="refMessage">
+      Message with $refs: <span class="message"> {{ refMessage }}</span>
     </div>
     <div>
-      With $refs:
-    </div>
-    <div>
-      Whit $parent:
+      Message with $parent:
     </div>
   </div>
 </template>
@@ -32,6 +33,11 @@ export default {
       type: String,
       required: true
     }
+  },
+  data() {
+    return {
+      refMessage: this.$refMessage
+    };
   },
   inject: ["myTextInjected"],
   computed: {

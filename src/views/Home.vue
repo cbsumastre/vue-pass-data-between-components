@@ -7,13 +7,14 @@
       placeholder="Enter new message in parent"
     ></textarea>
     <button v-on:click="send" class="myButton">Send message to child</button>
-    <Child :childMessage="childMessage.text" class="child" />
+    <Child :childMessage="childMessage.text" ref="refChild" class="child" />
   </div>
 </template>
 
 <script>
 import Child from "@/components/Child";
 import { mapActions } from "vuex";
+import Vue from "vue";
 
 export default {
   name: "Home",
@@ -34,6 +35,8 @@ export default {
     send() {
       this.childMessage.text = this.parentMessage;
       this.storeMessage(this.parentMessage);
+      this.$refs.refChild.refMessage = this.parentMessage;
+      Vue.prototype.$refMessage = this.parentMessage;
       //clear parent message
       this.parentMessage = "";
     }
