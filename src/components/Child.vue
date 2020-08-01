@@ -3,8 +3,9 @@
     <div v-if="childMessage">
       With props: <span class="message">{{ childMessage }}</span>
     </div>
-    <div>
-      With inject/provide:
+    <div v-if="myTextInjected.text">
+      With provide (parent) / inject (child):
+      <span class="message">{{ myTextInjected.text }} </span>
     </div>
     <div v-if="getStoreMessage">
       With vuex:
@@ -32,6 +33,7 @@ export default {
       required: true
     }
   },
+  inject: ["myTextInjected"],
   computed: {
     ...mapGetters(["getStoreMessage"])
   }

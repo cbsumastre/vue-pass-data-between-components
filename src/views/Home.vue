@@ -7,7 +7,7 @@
       placeholder="Enter new message in parent"
     ></textarea>
     <button v-on:click="send" class="myButton">Send message to child</button>
-    <Child :childMessage="childMessage" class="child" />
+    <Child :childMessage="childMessage.text" class="child" />
   </div>
 </template>
 
@@ -23,13 +23,16 @@ export default {
   data: function() {
     return {
       parentMessage: "",
-      childMessage: ""
+      childMessage: { text: "" } // change childMessage in object (reactive)
     };
+  },
+  provide() {
+    return { myTextInjected: this.childMessage };
   },
   methods: {
     ...mapActions(["storeMessage"]),
     send() {
-      this.childMessage = this.parentMessage;
+      this.childMessage.text = this.parentMessage;
       this.storeMessage(this.parentMessage);
       //clear parent message
       this.parentMessage = "";
@@ -49,6 +52,7 @@ export default {
   margin: 20px 0;
   min-height: 200px;
 }
+
 .title {
   width: 50%;
   color: #18ab29;
