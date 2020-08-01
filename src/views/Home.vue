@@ -1,11 +1,13 @@
 <template>
   <div class="container">
     <h1 class="title">Pass data between components</h1>
+    <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
     <textarea
-      class="parent"
+      class="myTextArea"
       v-model="parentMessage"
       placeholder="Enter new message in parent"
     ></textarea>
+
     <button v-on:click="send" class="myButton">Send message to child</button>
     <Child :childMessage="childMessage.text" ref="refChild" class="child" />
   </div>
@@ -25,7 +27,8 @@ export default {
     return {
       parentMessage: "",
       childMessage: { text: "" }, // change childMessage in object (reactive)
-      childMessageParent: ""
+      childMessageParent: "",
+      errorMessage: ""
     };
   },
   provide() {
@@ -34,13 +37,18 @@ export default {
   methods: {
     ...mapActions(["storeMessage"]),
     send() {
-      this.childMessage.text = this.parentMessage;
-      this.childMessageParent = this.parentMessage;
-      this.storeMessage(this.parentMessage);
-      this.$refs.refChild.refMessage = this.parentMessage;
-      Vue.prototype.$refMessage = this.parentMessage;
-      //clear parent message
-      this.parentMessage = "";
+      if (this.parentMessage) {
+        this.errorMessage = "";
+        this.childMessage.text = this.parentMessage;
+        this.childMessageParent = this.parentMessage;
+        this.storeMessage(this.parentMessage);
+        this.$refs.refChild.refMessage = this.parentMessage;
+        Vue.prototype.$refMessage = this.parentMessage;
+        //clear parent message
+        this.parentMessage = "";
+      } else {
+        this.errorMessage = "Error!! you have not entered a message.";
+      }
     }
   }
 };
@@ -62,13 +70,14 @@ export default {
   width: 50%;
   color: #18ab29;
 }
-.parent {
-  width: 50%;
+
+.myTextArea {
+  width: 25%;
   min-height: 150px;
-  background-color: orange;
   margin-top: 25px;
   margin-bottom: 25px;
 }
+
 .myButton {
   box-shadow: 0px 0px 0px 0px #3dc21b;
   background-color: #44c767;
@@ -82,12 +91,18 @@ export default {
   padding: 19px 31px;
   text-decoration: none;
 }
+
 .myButton:hover {
   background-color: #5cbf2a;
 }
+
 .myButton:active {
   position: relative;
   top: 1px;
+}
+
+.error {
+  color: rgb(255, 0, 0);
 }
 
 .child {
